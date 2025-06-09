@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electric Spring</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0a0a23;
+            --neon-green: #39ff14;
+            --neon-pink: #ff00c8;
+            --neon-blue: #00eaff;
+            --glitch-red: #ff003c;
+            --glitch-blue: #00fff9;
+            --text-main: #e0e0e0;
+            --accent: #a78bfa;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0a23 80%, #1a0033 100%);
+            color: var(--text-main);
+            font-family: 'Orbitron', monospace;
+            overflow-x: hidden;
+            position: relative;
+            letter-spacing: 0.05em;
+        }
+
+        .glitch {
+            font-size: 3rem;
+            color: var(--neon-green);
+            position: relative;
+            display: inline-block;
+            animation: flicker 2s infinite alternate;
+            text-shadow: 0 0 8px var(--neon-green), 0 0 30px var(--neon-green), 2px 2px 2px var(--glitch-red), -2px -2px 2px var(--glitch-blue);
+        }
+
+            .glitch::before, .glitch::after {
+                content: attr(data-text);
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                overflow: hidden;
+                color: var(--glitch-red);
+                z-index: -1;
+                opacity: 0.7;
+            }
+
+            .glitch::before {
+                animation: glitchTop 1.5s infinite linear alternate-reverse;
+                color: var(--glitch-red);
+            }
+
+            .glitch::after {
+                animation: glitchBottom 1.2s infinite linear alternate-reverse;
+                color: var(--glitch-blue);
+            }
+
+        @keyframes glitchTop {
+            0% {
+                clip-path: inset(0 0 80% 0);
+                transform: translate(-2px, -2px);
+            }
+
+            100% {
+                clip-path: inset(0 0 10% 0);
+                transform: translate(2px, 2px);
+            }
+        }
+
+        @keyframes glitchBottom {
+            0% {
+                clip-path: inset(80% 0 0 0);
+                transform: translate(2px, 2px);
+            }
+
+            100% {
+                clip-path: inset(10% 0 0 0);
+                transform: translate(-2px, -2px);
+            }
+        }
+
+        @keyframes flicker {
+            0%, 100% {
+                opacity: 1;
+            }
+
+            45% {
+                opacity: 0.7;
+            }
+
+            55% {
+                opacity: 0.4;
+            }
+
+            60% {
+                opacity: 0.9;
+            }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 10vh auto 0 auto;
+            background: rgba(20,20,40,0.85);
+            border-radius: 20px;
+            box-shadow: 0 0 40px var(--neon-blue), 0 0 10px var(--neon-green);
+            padding: 3rem 2rem 2.5rem 2rem;
+            position: relative;
+            z-index: 2;
+            border: 1.5px solid var(--accent);
+            backdrop-filter: blur(2px);
+        }
+
+        h2 {
+            color: var(--neon-pink);
+            text-shadow: 0 0 8px var(--neon-pink), 0 0 20px var(--neon-pink);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            letter-spacing: 0.1em;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 2rem;
+        }
+
+        .cta-btn {
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+            color: #111;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-family: inherit;
+            padding: 0.9rem 2.2rem;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-blue);
+            text-shadow: 0 0 2px #fff;
+            transition: transform 0.12s, box-shadow 0.12s;
+            outline: none;
+            margin-bottom: 1rem;
+        }
+
+            .cta-btn:hover, .cta-btn:focus {
+                transform: scale(1.07) rotate(-1deg);
+                box-shadow: 0 0 25px var(--neon-pink), 0 0 40px var(--neon-blue);
+            }
+
+        .footer {
+            text-align: center;
+            color: var(--accent);
+            font-size: 1rem;
+            margin-top: 3rem;
+            opacity: 0.7;
+            letter-spacing: 0.07em;
+        }
+
+        .hex-bg {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            background: repeating-linear-gradient(60deg, transparent, transparent 40px, var(--neon-blue) 41px, transparent 42px), repeating-linear-gradient(120deg, transparent, transparent 40px, var(--neon-green) 41px, transparent 42px);
+            opacity: 0.08;
+            animation: bgmove 30s linear infinite;
+        }
+
+        @keyframes bgmove {
+            0% {
+                background-position: 0 0, 0 0;
+            }
+
+            100% {
+                background-position: 200px 200px, -200px -200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hex-bg"></div>
+    <div class="container">
+        <div class="glitch" data-text="ELECTRIC SPRING">ELECTRIC SPRING</div>
+        <h2>Welcome to the digital frontier.</h2>
+        <p>
+            Dive into a world where code pulses like neon.<br>
+            Technology, creativity, and a spark of rebellion.<br>
+            <span style="color:var(--neon-green);">Connect. Explore. Disrupt.</span>
+        </p>
+        <button class="cta-btn">Enter the System</button>
+    </div>
+    <div class="footer">
+        &copy; 2025 Electric Spring. All rights reserved.
+    </div>
+</body>
+</html>
