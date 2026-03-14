@@ -244,16 +244,25 @@
         const systemPassword = document.getElementById('systemPassword');
         const statusMsg = document.getElementById('statusMsg');
 
+        const ACCESS_PASSWORD = '312';
+        const SECRET_ACCESS_KEY = 'electric-spring-secret-access';
+
+        function showStatus(message, isSuccess = false) {
+            statusMsg.textContent = message;
+            statusMsg.style.color = isSuccess ? 'var(--neon-green)' : 'var(--neon-pink)';
+        }
+
         function tryAccess() {
-            if (systemPassword.value === '312') {
-                statusMsg.textContent = 'Access granted. Redirecting...';
-                statusMsg.style.color = 'var(--neon-green)';
+            const attemptedPassword = systemPassword.value.trim();
+
+            if (attemptedPassword === ACCESS_PASSWORD) {
+                sessionStorage.setItem(SECRET_ACCESS_KEY, 'granted');
+                showStatus('Access granted. Redirecting...', true);
                 window.location.href = 'secret-chamber.html';
                 return;
             }
 
-            statusMsg.textContent = 'Access denied. Wrong key.';
-            statusMsg.style.color = 'var(--neon-pink)';
+            showStatus('Access denied. Wrong key.');
         }
 
         enterButton.addEventListener('click', tryAccess);
@@ -262,6 +271,11 @@
                 tryAccess();
             }
         });
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('error') === 'locked') {
+            showStatus('Session expired. Enter password again to access the secret chamber.');
+        }
     </script>
 </body>
 </html>
