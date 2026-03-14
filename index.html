@@ -1,267 +1,520 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electric Spring</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <title>Casetta Viva</title>
     <style>
         :root {
-            --bg-main: #0a0a23;
-            --neon-green: #39ff14;
-            --neon-pink: #ff00c8;
-            --neon-blue: #00eaff;
-            --glitch-red: #ff003c;
-            --glitch-blue: #00fff9;
-            --text-main: #e0e0e0;
-            --accent: #a78bfa;
+            --sky-top: #8ec5ff;
+            --sky-bottom: #f3d4ff;
+            --grass: #7ecf88;
+            --wood: #c98b57;
+            --wood-dark: #9d6539;
+            --cream: #fff4de;
+            --cozy-shadow: rgba(38, 21, 13, 0.25);
+            --text: #3f2a1e;
+            --panel: rgba(255, 245, 227, 0.9);
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             margin: 0;
             min-height: 100vh;
-            background: linear-gradient(135deg, #0a0a23 80%, #1a0033 100%);
-            color: var(--text-main);
-            font-family: 'Orbitron', monospace;
-            overflow-x: hidden;
-            position: relative;
-            letter-spacing: 0.05em;
-        }
-
-        .glitch {
-            font-size: 3rem;
-            color: var(--neon-green);
-            position: relative;
-            display: inline-block;
-            animation: flicker 2s infinite alternate;
-            text-shadow: 0 0 8px var(--neon-green), 0 0 30px var(--neon-green), 2px 2px 2px var(--glitch-red), -2px -2px 2px var(--glitch-blue);
-        }
-
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            overflow: hidden;
-            color: var(--glitch-red);
-            z-index: -1;
-            opacity: 0.7;
-        }
-
-        .glitch::before {
-            animation: glitchTop 1.5s infinite linear alternate-reverse;
-            color: var(--glitch-red);
-        }
-
-        .glitch::after {
-            animation: glitchBottom 1.2s infinite linear alternate-reverse;
-            color: var(--glitch-blue);
-        }
-
-        @keyframes glitchTop {
-            0% {
-                clip-path: inset(0 0 80% 0);
-                transform: translate(-2px, -2px);
-            }
-
-            100% {
-                clip-path: inset(0 0 10% 0);
-                transform: translate(2px, 2px);
-            }
-        }
-
-        @keyframes glitchBottom {
-            0% {
-                clip-path: inset(80% 0 0 0);
-                transform: translate(2px, 2px);
-            }
-
-            100% {
-                clip-path: inset(10% 0 0 0);
-                transform: translate(-2px, -2px);
-            }
-        }
-
-        @keyframes flicker {
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            45% {
-                opacity: 0.7;
-            }
-
-            55% {
-                opacity: 0.4;
-            }
-
-            60% {
-                opacity: 0.9;
-            }
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 10vh auto 0 auto;
-            background: rgba(20, 20, 40, 0.85);
-            border-radius: 20px;
-            box-shadow: 0 0 40px var(--neon-blue), 0 0 10px var(--neon-green);
-            padding: 3rem 2rem 2.5rem 2rem;
-            position: relative;
-            z-index: 2;
-            border: 1.5px solid var(--accent);
-            backdrop-filter: blur(2px);
-        }
-
-        h2 {
-            color: var(--neon-pink);
-            text-shadow: 0 0 8px var(--neon-pink), 0 0 20px var(--neon-pink);
-            margin-top: 0;
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-            letter-spacing: 0.1em;
-        }
-
-        p {
-            font-size: 1.2rem;
-            color: var(--text-main);
-            margin-bottom: 2rem;
-        }
-
-        .access-panel {
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+            color: var(--text);
+            background: linear-gradient(var(--sky-top), var(--sky-bottom));
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.7rem;
+            flex-direction: column;
             align-items: center;
+            padding: 1rem;
+            overflow-x: hidden;
         }
 
-        .cta-btn {
-            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
-            color: #111;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            font-family: inherit;
-            padding: 0.9rem 2.2rem;
-            cursor: pointer;
-            box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-blue);
-            text-shadow: 0 0 2px #fff;
-            transition: transform 0.12s, box-shadow 0.12s;
-            outline: none;
-            margin-bottom: 1rem;
+        h1 {
+            margin: 0.3rem 0;
+            font-size: clamp(1.5rem, 2.5vw, 2.3rem);
         }
 
-        .cta-btn:hover,
-        .cta-btn:focus {
-            transform: scale(1.07) rotate(-1deg);
-            box-shadow: 0 0 25px var(--neon-pink), 0 0 40px var(--neon-blue);
-        }
-
-        .password-input {
-            font-family: inherit;
-            font-size: 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--neon-blue);
-            padding: 0.8rem 0.9rem;
-            color: var(--text-main);
-            background: rgba(10, 10, 35, 0.8);
-            box-shadow: 0 0 10px rgba(0, 234, 255, 0.25);
-            min-width: 180px;
-            margin-bottom: 1rem;
-        }
-
-        .password-input:focus {
-            outline: none;
-            border-color: var(--neon-green);
-            box-shadow: 0 0 12px rgba(57, 255, 20, 0.45);
-        }
-
-        .status-msg {
-            min-height: 1.4rem;
-            color: var(--neon-pink);
-            font-size: 0.9rem;
+        .subtitle {
             margin: 0;
-        }
-
-        .footer {
+            opacity: 0.85;
             text-align: center;
-            color: var(--accent);
-            font-size: 1rem;
-            margin-top: 3rem;
-            opacity: 0.7;
-            letter-spacing: 0.07em;
         }
 
-        .hex-bg {
+        .world {
+            width: min(100%, 1000px);
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .house-wrap {
+            perspective: 1000px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 18px 40px var(--cozy-shadow);
+            background: linear-gradient(#bfe6ff 0%, #dff3ff 45%, var(--grass) 46%, #67b173 100%);
+            min-height: 620px;
+            position: relative;
+        }
+
+        .sun {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fffde8 10%, #ffe28f 55%, #ffbc55);
+            position: absolute;
+            right: 2rem;
+            top: 1.2rem;
+            box-shadow: 0 0 40px rgba(255, 212, 79, 0.7);
+        }
+
+        .house {
+            position: absolute;
+            left: 50%;
+            bottom: 35px;
+            width: min(95%, 700px);
+            height: 460px;
+            transform: translateX(-50%) rotateX(10deg);
+            transform-style: preserve-3d;
+            background: var(--cream);
+            border: 10px solid var(--wood);
+            border-radius: 12px;
+            box-shadow: inset 0 0 0 6px #eec897, 0 14px 32px rgba(0, 0, 0, 0.22);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 1fr 1fr;
+            gap: 10px;
+            padding: 12px;
+        }
+
+        .room {
+            border-radius: 10px;
+            border: 4px solid #f6d8b0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 -16px rgba(0, 0, 0, 0.07);
+        }
+
+        .room::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: repeating-linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.08) 0 10px,
+                rgba(0, 0, 0, 0.03) 10px 20px
+            );
             pointer-events: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            background: repeating-linear-gradient(60deg, transparent, transparent 40px, var(--neon-blue) 41px, transparent 42px), repeating-linear-gradient(120deg, transparent, transparent 40px, var(--neon-green) 41px, transparent 42px);
-            opacity: 0.08;
-            animation: bgmove 30s linear infinite;
         }
 
-        @keyframes bgmove {
-            0% {
-                background-position: 0 0, 0 0;
+        .kitchen { background: #f9cfb8; }
+        .living { background: #f5e9ba; }
+        .studio { background: #e4ccf7; }
+        .garden { background: #c8ebbf; }
+        .bedroom { background: #b9d7ff; }
+        .hall { background: #ffd9e3; }
+
+        .room-label {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 999px;
+            font-size: 0.72rem;
+            padding: 0.2rem 0.55rem;
+        }
+
+        .furniture {
+            position: absolute;
+            border-radius: 8px;
+            border: 2px solid rgba(93, 55, 25, 0.45);
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        .table { width: 66px; height: 36px; right: 18px; bottom: 20px; }
+        .sofa { width: 68px; height: 34px; left: 18px; bottom: 18px; background: rgba(255, 188, 102, 0.6); }
+        .desk { width: 60px; height: 30px; right: 16px; bottom: 22px; background: rgba(166, 138, 217, 0.55); }
+        .dog-bed { width: 52px; height: 28px; left: 18px; bottom: 20px; background: rgba(181, 126, 73, 0.55); }
+        .bed { width: 70px; height: 32px; left: 16px; bottom: 18px; background: rgba(124, 170, 255, 0.5); }
+
+        .character,
+        .dog {
+            position: absolute;
+            width: 42px;
+            height: 64px;
+            transition: left 1.2s ease, top 1.2s ease;
+            z-index: 5;
+            filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.25));
+        }
+
+        .dog {
+            width: 42px;
+            height: 34px;
+            transition-duration: 1.4s;
+        }
+
+        .head {
+            width: 24px;
+            height: 24px;
+            background: #f5c59f;
+            border: 2px solid #8b5a3f;
+            border-radius: 50%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .head::before,
+        .head::after {
+            content: "";
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #2e1f16;
+            border-radius: 50%;
+            top: 9px;
+        }
+
+        .head::before { left: 5px; }
+        .head::after { right: 5px; }
+
+        .body {
+            width: 28px;
+            height: 34px;
+            margin: -1px auto 0;
+            background: linear-gradient(#9bd1ff, #4f90de);
+            border-radius: 10px 10px 8px 8px;
+            border: 2px solid #325f92;
+        }
+
+        .dog-shape {
+            width: 42px;
+            height: 26px;
+            background: #91613d;
+            border: 2px solid #5d3820;
+            border-radius: 18px;
+            position: absolute;
+            bottom: 0;
+        }
+
+        .dog-shape::before {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 14px;
+            background: #91613d;
+            border: 2px solid #5d3820;
+            border-radius: 50%;
+            left: -8px;
+            top: -6px;
+        }
+
+        .dog-shape::after {
+            content: "";
+            position: absolute;
+            width: 12px;
+            height: 4px;
+            background: #5d3820;
+            right: -8px;
+            top: 10px;
+            border-radius: 999px;
+            transform-origin: left center;
+            animation: wag 0.5s infinite alternate;
+        }
+
+        @keyframes wag {
+            from { transform: rotate(10deg); }
+            to { transform: rotate(-22deg); }
+        }
+
+        .ui-panel {
+            background: var(--panel);
+            border: 2px solid #f3cc8f;
+            border-radius: 14px;
+            padding: 0.9rem;
+            box-shadow: 0 8px 20px rgba(75, 49, 24, 0.2);
+            align-self: start;
+        }
+
+        .ui-panel h2 {
+            margin: 0.2rem 0 0.7rem;
+            font-size: 1.2rem;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.55rem;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 0.6rem;
+            cursor: pointer;
+            background: linear-gradient(#ffd99f, #ffc15f);
+            color: #442d1f;
+            font-weight: 700;
+            box-shadow: 0 3px 0 #d18e3e;
+        }
+
+        button:active { transform: translateY(1px); }
+
+        .log {
+            margin-top: 0.8rem;
+            min-height: 160px;
+            max-height: 260px;
+            overflow: auto;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.68);
+            border: 1px solid #f2d9a8;
+            padding: 0.55rem;
+            font-size: 0.92rem;
+            line-height: 1.35;
+        }
+
+        .status {
+            margin: 0.5rem 0;
+            background: rgba(255, 255, 255, 0.64);
+            border-radius: 10px;
+            padding: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .small {
+            font-size: 0.8rem;
+            opacity: 0.75;
+            margin-top: 0.6rem;
+        }
+
+        @media (max-width: 900px) {
+            .world {
+                grid-template-columns: 1fr;
             }
 
-            100% {
-                background-position: 200px 200px, -200px -200px;
+            .house-wrap {
+                min-height: 560px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="hex-bg"></div>
-    <div class="container">
-        <div class="glitch" data-text="ELECTRIC SPRING">ELECTRIC SPRING</div>
-        <h2>Welcome to the digital frontier.</h2>
-        <p>
-            Dive into a world where code pulses like neon.<br>
-            Technology, creativity, and a spark of rebellion.<br>
-            <span style="color:var(--neon-green);">Connect. Explore. Disrupt.</span>
-        </p>
-        <div class="access-panel">
-            <button class="cta-btn" id="enterButton">Enter the System</button>
-            <input type="password" class="password-input" id="systemPassword" placeholder="Password" aria-label="System password">
-        </div>
-        <p class="status-msg" id="statusMsg"></p>
-    </div>
-    <div class="footer">
-        &copy; 2025 Electric Spring. All rights reserved.
-    </div>
+    <h1>🏡 Casetta Viva</h1>
+    <p class="subtitle">Un piccolo gioco cozy in stile "Little Computer People": il tuo omino e il suo cane vivono la giornata.</p>
+
+    <main class="world">
+        <section class="house-wrap" aria-label="Casa interattiva">
+            <div class="sun" aria-hidden="true"></div>
+            <div class="house" id="house">
+                <div class="room kitchen" data-room="kitchen"><span class="room-label">Cucina</span><div class="furniture table"></div></div>
+                <div class="room living" data-room="living"><span class="room-label">Salotto</span><div class="furniture sofa"></div></div>
+                <div class="room studio" data-room="studio"><span class="room-label">Studio</span><div class="furniture desk"></div></div>
+                <div class="room garden" data-room="garden"><span class="room-label">Giardino</span><div class="furniture dog-bed"></div></div>
+                <div class="room bedroom" data-room="bedroom"><span class="room-label">Camera</span><div class="furniture bed"></div></div>
+                <div class="room hall" data-room="hall"><span class="room-label">Ingresso</span></div>
+
+                <div class="character" id="character" aria-label="Omino">
+                    <div class="head"></div>
+                    <div class="body"></div>
+                </div>
+
+                <div class="dog" id="dog" aria-label="Cane">
+                    <div class="dog-shape"></div>
+                </div>
+            </div>
+        </section>
+
+        <aside class="ui-panel">
+            <h2>Interazioni</h2>
+            <div class="actions">
+                <button data-action="talk">💬 Parla</button>
+                <button data-action="pet">🐶 Gioca col cane</button>
+                <button data-action="lunch">🍝 Prepara pranzo</button>
+                <button data-action="dinner">🍲 Prepara cena</button>
+                <button data-action="work">🧰 Piccolo lavoretto</button>
+                <button data-action="sleep">🌙 Metti a letto</button>
+                <button id="musicBtn">🎵 Avvia musica</button>
+                <button id="autoBtn">⏱️ Auto giornata</button>
+            </div>
+            <p class="status" id="status">Mattina tranquilla. L'omino è in salotto col cane.</p>
+            <div class="log" id="log" aria-live="polite"></div>
+            <p class="small">Tip: clicca una stanza della casa per farci camminare l'omino.</p>
+        </aside>
+    </main>
 
     <script>
-        const enterButton = document.getElementById('enterButton');
-        const systemPassword = document.getElementById('systemPassword');
-        const statusMsg = document.getElementById('statusMsg');
+        const character = document.getElementById('character');
+        const dog = document.getElementById('dog');
+        const statusEl = document.getElementById('status');
+        const logEl = document.getElementById('log');
+        const musicBtn = document.getElementById('musicBtn');
+        const autoBtn = document.getElementById('autoBtn');
 
-        function tryAccess() {
-            if (systemPassword.value === '312') {
-                statusMsg.textContent = 'Access granted. Redirecting...';
-                statusMsg.style.color = 'var(--neon-green)';
-                window.location.href = 'secret-chamber.html';
+        const roomTargets = {
+            kitchen: { human: [120, 140], dog: [80, 175] },
+            living: { human: [355, 142], dog: [312, 176] },
+            studio: { human: [570, 146], dog: [530, 178] },
+            garden: { human: [120, 352], dog: [78, 384] },
+            bedroom: { human: [356, 350], dog: [315, 384] },
+            hall: { human: [570, 350], dog: [530, 385] }
+        };
+
+        const activityLines = {
+            talk: [
+                'L\'omino racconta al cane dei suoi sogni nel cassetto.',
+                'Piccola chiacchierata: "Oggi andiamo piano, ma bene".'
+            ],
+            pet: [
+                'Il cane scodinzola fortissimo e corre in tondo.',
+                'Cinque minuti di coccole: morale +100.'
+            ],
+            lunch: [
+                'In cucina profuma di sugo e basilico: pranzo pronto!',
+                'L\'omino prepara un panino gourmet per sé e un biscotto per il cane.'
+            ],
+            dinner: [
+                'Cena calda servita sul tavolo di legno. Atmosfera da favola.',
+                'Zuppa e pane tostato: il cane aspetta il suo bocconcino.'
+            ],
+            work: [
+                'Un po\' di bricolage nello studio: una mensola nuova!',
+                'L\'omino aggiusta la lampada e canticchia.'
+            ],
+            sleep: [
+                'Si abbassano le luci: buonanotte casetta viva.',
+                'L\'omino si mette a letto, il cane veglia ai piedi del letto.'
+            ]
+        };
+
+        function setPositions(roomKey) {
+            const target = roomTargets[roomKey];
+            if (!target) return;
+            character.style.left = `${target.human[0]}px`;
+            character.style.top = `${target.human[1]}px`;
+            dog.style.left = `${target.dog[0]}px`;
+            dog.style.top = `${target.dog[1]}px`;
+        }
+
+        function appendLog(text) {
+            const row = document.createElement('div');
+            row.textContent = `• ${text}`;
+            logEl.prepend(row);
+        }
+
+        function randomFrom(list) {
+            return list[Math.floor(Math.random() * list.length)];
+        }
+
+        function performAction(action) {
+            const route = {
+                talk: 'living',
+                pet: 'garden',
+                lunch: 'kitchen',
+                dinner: 'kitchen',
+                work: 'studio',
+                sleep: 'bedroom'
+            };
+
+            const room = route[action] || 'hall';
+            setPositions(room);
+            const line = randomFrom(activityLines[action]);
+            appendLog(line);
+            statusEl.textContent = line;
+
+            if (action === 'sleep') {
+                document.body.style.background = 'linear-gradient(#4f6aa7, #a788c7)';
+            } else {
+                document.body.style.background = 'linear-gradient(var(--sky-top), var(--sky-bottom))';
+            }
+        }
+
+        document.querySelectorAll('[data-action]').forEach((btn) => {
+            btn.addEventListener('click', () => performAction(btn.dataset.action));
+        });
+
+        document.querySelectorAll('.room').forEach((room) => {
+            room.addEventListener('click', () => {
+                setPositions(room.dataset.room);
+                const nice = `Passeggiata verso ${room.querySelector('.room-label').textContent.toLowerCase()}.`;
+                statusEl.textContent = nice;
+                appendLog(nice);
+            });
+        });
+
+        // Cozy background music via WebAudio (no external file)
+        let audioCtx;
+        let musicPlaying = false;
+        let oscillators = [];
+
+        function createTone(freq, type, gainValue) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+            gain.gain.value = gainValue;
+            osc.connect(gain).connect(audioCtx.destination);
+            osc.start();
+            oscillators.push({ osc, gain });
+        }
+
+        function startMusic() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            createTone(196, 'sine', 0.03);   // G3
+            createTone(246.94, 'triangle', 0.025); // B3
+            createTone(329.63, 'sine', 0.02); // E4
+            musicPlaying = true;
+            musicBtn.textContent = '🔇 Ferma musica';
+            appendLog('Parte una musichetta soft in sottofondo.');
+        }
+
+        function stopMusic() {
+            oscillators.forEach(({ osc, gain }) => {
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
+                osc.stop(audioCtx.currentTime + 0.45);
+            });
+            oscillators = [];
+            musicPlaying = false;
+            musicBtn.textContent = '🎵 Avvia musica';
+            appendLog('Musica fermata.');
+        }
+
+        musicBtn.addEventListener('click', async () => {
+            if (!musicPlaying) {
+                startMusic();
+            } else {
+                stopMusic();
+            }
+        });
+
+        let autoDay = null;
+        autoBtn.addEventListener('click', () => {
+            if (autoDay) {
+                clearInterval(autoDay);
+                autoDay = null;
+                autoBtn.textContent = '⏱️ Auto giornata';
+                appendLog('Modalità auto giornata disattivata.');
                 return;
             }
 
-            statusMsg.textContent = 'Access denied. Wrong key.';
-            statusMsg.style.color = 'var(--neon-pink)';
-        }
-
-        enterButton.addEventListener('click', tryAccess);
-        systemPassword.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                tryAccess();
-            }
+            const cycle = ['talk', 'work', 'lunch', 'pet', 'dinner', 'sleep'];
+            let i = 0;
+            performAction(cycle[i]);
+            autoDay = setInterval(() => {
+                i = (i + 1) % cycle.length;
+                performAction(cycle[i]);
+            }, 5000);
+            autoBtn.textContent = '⏸️ Ferma auto';
+            appendLog('Parte il ciclo automatico della giornata.');
         });
+
+        // Initial placement and text
+        setPositions('living');
+        appendLog('La giornata inizia: sole, casa calda e tanta tranquillità.');
     </script>
 </body>
 </html>
