@@ -1,281 +1,375 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electric Spring</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>First APK - Neon Maze</title>
     <style>
         :root {
-            --bg-main: #0a0a23;
-            --neon-green: #39ff14;
-            --neon-pink: #ff00c8;
-            --neon-blue: #00eaff;
-            --glitch-red: #ff003c;
-            --glitch-blue: #00fff9;
-            --text-main: #e0e0e0;
-            --accent: #a78bfa;
+            --bg: #070918;
+            --panel: #0f1531;
+            --neon: #34ff99;
+            --yellow: #ffe66d;
+            --danger: #ff4f7d;
+            --text: #d9e6ff;
         }
+
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
             min-height: 100vh;
-            background: linear-gradient(135deg, #0a0a23 80%, #1a0033 100%);
-            color: var(--text-main);
-            font-family: 'Orbitron', monospace;
-            overflow-x: hidden;
-            position: relative;
-            letter-spacing: 0.05em;
-        }
-
-        .glitch {
-            font-size: 3rem;
-            color: var(--neon-green);
-            position: relative;
-            display: inline-block;
-            animation: flicker 2s infinite alternate;
-            text-shadow: 0 0 8px var(--neon-green), 0 0 30px var(--neon-green), 2px 2px 2px var(--glitch-red), -2px -2px 2px var(--glitch-blue);
-        }
-
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            overflow: hidden;
-            color: var(--glitch-red);
-            z-index: -1;
-            opacity: 0.7;
-        }
-
-        .glitch::before {
-            animation: glitchTop 1.5s infinite linear alternate-reverse;
-            color: var(--glitch-red);
-        }
-
-        .glitch::after {
-            animation: glitchBottom 1.2s infinite linear alternate-reverse;
-            color: var(--glitch-blue);
-        }
-
-        @keyframes glitchTop {
-            0% {
-                clip-path: inset(0 0 80% 0);
-                transform: translate(-2px, -2px);
-            }
-
-            100% {
-                clip-path: inset(0 0 10% 0);
-                transform: translate(2px, 2px);
-            }
-        }
-
-        @keyframes glitchBottom {
-            0% {
-                clip-path: inset(80% 0 0 0);
-                transform: translate(2px, 2px);
-            }
-
-            100% {
-                clip-path: inset(10% 0 0 0);
-                transform: translate(-2px, -2px);
-            }
-        }
-
-        @keyframes flicker {
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            45% {
-                opacity: 0.7;
-            }
-
-            55% {
-                opacity: 0.4;
-            }
-
-            60% {
-                opacity: 0.9;
-            }
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 10vh auto 0 auto;
-            background: rgba(20, 20, 40, 0.85);
-            border-radius: 20px;
-            box-shadow: 0 0 40px var(--neon-blue), 0 0 10px var(--neon-green);
-            padding: 3rem 2rem 2.5rem 2rem;
-            position: relative;
-            z-index: 2;
-            border: 1.5px solid var(--accent);
-            backdrop-filter: blur(2px);
-        }
-
-        h2 {
-            color: var(--neon-pink);
-            text-shadow: 0 0 8px var(--neon-pink), 0 0 20px var(--neon-pink);
-            margin-top: 0;
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-            letter-spacing: 0.1em;
-        }
-
-        p {
-            font-size: 1.2rem;
-            color: var(--text-main);
-            margin-bottom: 2rem;
-        }
-
-        .access-panel {
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle at top, #1a245f, var(--bg) 60%);
+            color: var(--text);
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.7rem;
+            justify-content: center;
             align-items: center;
+            padding: 1rem;
         }
 
-        .cta-btn {
-            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
-            color: #111;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            font-family: inherit;
-            padding: 0.9rem 2.2rem;
-            cursor: pointer;
-            box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-blue);
-            text-shadow: 0 0 2px #fff;
-            transition: transform 0.12s, box-shadow 0.12s;
-            outline: none;
-            margin-bottom: 1rem;
+        .app {
+            width: min(95vw, 520px);
+            background: rgba(15, 21, 49, 0.9);
+            border: 1px solid #3f4ea5;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(33, 255, 146, 0.2);
+            padding: 1rem;
         }
 
-        .cta-btn:hover,
-        .cta-btn:focus {
-            transform: scale(1.07) rotate(-1deg);
-            box-shadow: 0 0 25px var(--neon-pink), 0 0 40px var(--neon-blue);
-        }
-
-        .password-input {
-            font-family: inherit;
-            font-size: 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--neon-blue);
-            padding: 0.8rem 0.9rem;
-            color: var(--text-main);
-            background: rgba(10, 10, 35, 0.8);
-            box-shadow: 0 0 10px rgba(0, 234, 255, 0.25);
-            min-width: 180px;
-            margin-bottom: 1rem;
-        }
-
-        .password-input:focus {
-            outline: none;
-            border-color: var(--neon-green);
-            box-shadow: 0 0 12px rgba(57, 255, 20, 0.45);
-        }
-
-        .status-msg {
-            min-height: 1.4rem;
-            color: var(--neon-pink);
-            font-size: 0.9rem;
-            margin: 0;
-        }
-
-        .footer {
+        h1 {
+            margin: 0 0 0.6rem;
+            color: var(--neon);
             text-align: center;
-            color: var(--accent);
+            font-size: clamp(1.2rem, 4.5vw, 1.9rem);
+        }
+
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.6rem;
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .hud span {
+            background: #101936;
+            padding: 0.4rem 0.6rem;
+            border-radius: 10px;
+            border: 1px solid #2f438f;
+            flex: 1;
+            text-align: center;
+        }
+
+        canvas {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 14px;
+            border: 1px solid #4864cd;
+            background: #050816;
+            display: block;
+            touch-action: none;
+        }
+
+        .controls {
+            margin-top: 0.8rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.45rem;
+            user-select: none;
+        }
+
+        .controls button,
+        .restart {
+            background: linear-gradient(180deg, #2f4bd0, #1b2b79);
+            border: none;
+            color: #fff;
+            border-radius: 10px;
+            padding: 0.8rem;
             font-size: 1rem;
-            margin-top: 3rem;
-            opacity: 0.7;
-            letter-spacing: 0.07em;
         }
 
-        .hex-bg {
-            pointer-events: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            background: repeating-linear-gradient(60deg, transparent, transparent 40px, var(--neon-blue) 41px, transparent 42px), repeating-linear-gradient(120deg, transparent, transparent 40px, var(--neon-green) 41px, transparent 42px);
-            opacity: 0.08;
-            animation: bgmove 30s linear infinite;
+        .controls .empty { visibility: hidden; }
+
+        .status {
+            text-align: center;
+            min-height: 1.5rem;
+            color: var(--yellow);
+            margin-top: 0.6rem;
+            font-weight: bold;
         }
 
-        @keyframes bgmove {
-            0% {
-                background-position: 0 0, 0 0;
-            }
+        .restart {
+            width: 100%;
+            margin-top: 0.45rem;
+            background: linear-gradient(180deg, #1fb96a, #14834a);
+        }
 
-            100% {
-                background-position: 200px 200px, -200px -200px;
-            }
+        .tip {
+            text-align: center;
+            opacity: 0.9;
+            font-size: 0.88rem;
+            margin-top: 0.5rem;
         }
     </style>
 </head>
 <body>
-    <div class="hex-bg"></div>
-    <div class="container">
-        <div class="glitch" data-text="ELECTRIC SPRING">ELECTRIC SPRING</div>
-        <h2>Welcome to the digital frontier.</h2>
-        <p>
-            Dive into a world where code pulses like neon.<br>
-            Technology, creativity, and a spark of rebellion.<br>
-            <span style="color:var(--neon-green);">Connect. Explore. Disrupt.</span>
-        </p>
-        <div class="access-panel">
-            <button class="cta-btn" id="enterButton">Enter the System</button>
-            <input type="password" class="password-input" id="systemPassword" placeholder="Password" aria-label="System password">
+    <main class="app">
+        <h1>First APK · Neon Maze</h1>
+        <div class="hud">
+            <span>Punti: <strong id="score">0</strong></span>
+            <span>Vite: <strong id="lives">3</strong></span>
+            <span>Livello: <strong id="level">1</strong></span>
         </div>
-        <p class="status-msg" id="statusMsg"></p>
-    </div>
-    <div class="footer">
-        &copy; 2025 Electric Spring. All rights reserved.
-    </div>
+        <canvas id="game" width="420" height="420" aria-label="Gioco tipo Pac-Man"></canvas>
+        <div class="controls">
+            <div class="empty"></div>
+            <button data-dir="up">⬆️</button>
+            <div class="empty"></div>
+            <button data-dir="left">⬅️</button>
+            <button data-dir="down">⬇️</button>
+            <button data-dir="right">➡️</button>
+        </div>
+        <button class="restart" id="restartBtn">Ricomincia</button>
+        <p class="status" id="status"></p>
+        <p class="tip">Touch mobile support + tastiera (frecce / WASD).</p>
+    </main>
 
     <script>
-        const enterButton = document.getElementById('enterButton');
-        const systemPassword = document.getElementById('systemPassword');
-        const statusMsg = document.getElementById('statusMsg');
+        const mapRaw = [
+            '###############',
+            '#.............#',
+            '#.###.###.###.#',
+            '#o#.......#...#',
+            '#.#.## ##.#.#.#',
+            '#...# G #...#.#',
+            '###.# ###.###.#',
+            '#...#.....#...#',
+            '#.###.###.###.#',
+            '#.....P.......#',
+            '###############'
+        ];
 
-        const ACCESS_PASSWORD = '312';
-        const SECRET_ACCESS_KEY = 'electric-spring-secret-access';
+        const tileSize = 28;
+        const canvas = document.getElementById('game');
+        const ctx = canvas.getContext('2d');
 
-        function showStatus(message, isSuccess = false) {
-            statusMsg.textContent = message;
-            statusMsg.style.color = isSuccess ? 'var(--neon-green)' : 'var(--neon-pink)';
-        }
+        const scoreEl = document.getElementById('score');
+        const livesEl = document.getElementById('lives');
+        const levelEl = document.getElementById('level');
+        const statusEl = document.getElementById('status');
 
-        function tryAccess() {
-            const attemptedPassword = systemPassword.value.trim();
+        let map, dots, player, ghost, score, lives, level, poweredTimer, gameOver;
 
-            if (attemptedPassword === ACCESS_PASSWORD) {
-                sessionStorage.setItem(SECRET_ACCESS_KEY, 'granted');
-                showStatus('Access granted. Redirecting...', true);
-                window.location.href = 'secret-chamber.html';
-                return;
+        function setupGame(resetLives = true) {
+            map = mapRaw.map(row => row.split(''));
+            dots = 0;
+            poweredTimer = 0;
+            gameOver = false;
+
+            for (let y = 0; y < map.length; y++) {
+                for (let x = 0; x < map[y].length; x++) {
+                    if (map[y][x] === '.') dots++;
+                    if (map[y][x] === 'P') {
+                        player = { x, y, dir: { x: 0, y: 0 }, nextDir: { x: 0, y: 0 } };
+                        map[y][x] = ' ';
+                    }
+                    if (map[y][x] === 'G') {
+                        ghost = { x, y, dir: { x: 1, y: 0 } };
+                        map[y][x] = ' ';
+                    }
+                }
             }
 
-            showStatus('Access denied. Wrong key.');
+            if (resetLives) {
+                score = 0;
+                lives = 3;
+                level = 1;
+            }
+
+            updateHud();
+            statusEl.textContent = 'Mangia tutti i punti ed evita il fantasma!';
         }
 
-        enterButton.addEventListener('click', tryAccess);
-        systemPassword.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                tryAccess();
+        function updateHud() {
+            scoreEl.textContent = score;
+            livesEl.textContent = lives;
+            levelEl.textContent = level;
+        }
+
+        function isWall(x, y) {
+            if (y < 0 || y >= map.length || x < 0 || x >= map[0].length) return true;
+            return map[y][x] === '#';
+        }
+
+        function moveEntity(entity, spd) {
+            for (let i = 0; i < spd; i++) {
+                if (entity === player) {
+                    const nx = entity.x + entity.nextDir.x;
+                    const ny = entity.y + entity.nextDir.y;
+                    if (!isWall(nx, ny)) {
+                        entity.dir = { ...entity.nextDir };
+                    }
+                }
+
+                const tx = entity.x + entity.dir.x;
+                const ty = entity.y + entity.dir.y;
+                if (!isWall(tx, ty)) {
+                    entity.x = tx;
+                    entity.y = ty;
+                }
             }
+        }
+
+        function chooseGhostDir() {
+            const options = [
+                { x: 1, y: 0 },
+                { x: -1, y: 0 },
+                { x: 0, y: 1 },
+                { x: 0, y: -1 }
+            ].filter(d => !isWall(ghost.x + d.x, ghost.y + d.y));
+
+            options.sort((a, b) => {
+                const da = Math.abs(player.x - (ghost.x + a.x)) + Math.abs(player.y - (ghost.y + a.y));
+                const db = Math.abs(player.x - (ghost.x + b.x)) + Math.abs(player.y - (ghost.y + b.y));
+                return poweredTimer > 0 ? db - da : da - db;
+            });
+            ghost.dir = options[0] || ghost.dir;
+        }
+
+        function collect() {
+            if (map[player.y][player.x] === '.') {
+                map[player.y][player.x] = ' ';
+                score += 10;
+                dots--;
+            }
+            if (map[player.y][player.x] === 'o') {
+                map[player.y][player.x] = ' ';
+                score += 50;
+                poweredTimer = 30;
+            }
+        }
+
+        function checkCollision() {
+            if (player.x === ghost.x && player.y === ghost.y) {
+                if (poweredTimer > 0) {
+                    score += 200;
+                    ghost.x = 7;
+                    ghost.y = 5;
+                    statusEl.textContent = 'Fantasma mangiato!';
+                } else {
+                    lives--;
+                    updateHud();
+                    if (lives <= 0) {
+                        gameOver = true;
+                        statusEl.textContent = 'Game Over! Premi Ricomincia.';
+                    } else {
+                        statusEl.textContent = 'Hai perso una vita!';
+                        setupGame(false);
+                    }
+                }
+            }
+
+            if (dots <= 0) {
+                level++;
+                statusEl.textContent = 'Livello completato!';
+                setupGame(false);
+            }
+        }
+
+        function drawMap() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const offsetX = (canvas.width - map[0].length * tileSize) / 2;
+            const offsetY = (canvas.height - map.length * tileSize) / 2;
+
+            for (let y = 0; y < map.length; y++) {
+                for (let x = 0; x < map[y].length; x++) {
+                    const px = offsetX + x * tileSize;
+                    const py = offsetY + y * tileSize;
+
+                    if (map[y][x] === '#') {
+                        ctx.fillStyle = '#243b98';
+                        ctx.fillRect(px + 2, py + 2, tileSize - 4, tileSize - 4);
+                    }
+                    if (map[y][x] === '.') {
+                        ctx.fillStyle = '#f4f7ff';
+                        ctx.beginPath();
+                        ctx.arc(px + tileSize / 2, py + tileSize / 2, 3, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    if (map[y][x] === 'o') {
+                        ctx.fillStyle = '#ff9dff';
+                        ctx.beginPath();
+                        ctx.arc(px + tileSize / 2, py + tileSize / 2, 6, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+
+            const playerPx = offsetX + player.x * tileSize + tileSize / 2;
+            const playerPy = offsetY + player.y * tileSize + tileSize / 2;
+            ctx.fillStyle = 'var(--yellow)';
+            ctx.beginPath();
+            ctx.arc(playerPx, playerPy, tileSize * 0.38, 0.2 * Math.PI, 1.8 * Math.PI);
+            ctx.lineTo(playerPx, playerPy);
+            ctx.fillStyle = '#ffe66d';
+            ctx.fill();
+
+            const ghostPx = offsetX + ghost.x * tileSize + tileSize / 2;
+            const ghostPy = offsetY + ghost.y * tileSize + tileSize / 2;
+            ctx.fillStyle = poweredTimer > 0 ? '#7cf3ff' : '#ff4f7d';
+            ctx.beginPath();
+            ctx.arc(ghostPx, ghostPy, tileSize * 0.34, Math.PI, 0);
+            ctx.rect(ghostPx - tileSize * 0.34, ghostPy, tileSize * 0.68, tileSize * 0.34);
+            ctx.fill();
+        }
+
+        function tick() {
+            if (!gameOver) {
+                moveEntity(player, 1);
+                if (Math.random() < 0.3) chooseGhostDir();
+                moveEntity(ghost, 1);
+                collect();
+                checkCollision();
+                if (poweredTimer > 0) poweredTimer--;
+                updateHud();
+            }
+
+            drawMap();
+            requestAnimationFrame(tick);
+        }
+
+        function setDirection(dir) {
+            const dirs = {
+                up: { x: 0, y: -1 },
+                down: { x: 0, y: 1 },
+                left: { x: -1, y: 0 },
+                right: { x: 1, y: 0 }
+            };
+            player.nextDir = dirs[dir] || player.nextDir;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            const keyMap = {
+                ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right',
+                w: 'up', s: 'down', a: 'left', d: 'right'
+            };
+            const dir = keyMap[e.key];
+            if (dir) setDirection(dir);
         });
 
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('error') === 'locked') {
-            showStatus('Session expired. Enter password again to access the secret chamber.');
-        }
+        document.querySelectorAll('[data-dir]').forEach(btn => {
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                setDirection(btn.dataset.dir);
+            });
+            btn.addEventListener('click', () => setDirection(btn.dataset.dir));
+        });
+
+        document.getElementById('restartBtn').addEventListener('click', () => setupGame(true));
+
+        setupGame(true);
+        requestAnimationFrame(tick);
     </script>
 </body>
 </html>
