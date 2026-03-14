@@ -1,267 +1,406 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electric Spring</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-main: #0a0a23;
-            --neon-green: #39ff14;
-            --neon-pink: #ff00c8;
-            --neon-blue: #00eaff;
-            --glitch-red: #ff003c;
-            --glitch-blue: #00fff9;
-            --text-main: #e0e0e0;
-            --accent: #a78bfa;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Little Computer People — Tribute Sim</title>
+  <style>
+    :root {
+      --bg: #0f1a2f;
+      --panel: #172640;
+      --panel-2: #223556;
+      --ink: #d8e7ff;
+      --accent: #ffd166;
+      --ok: #77dd77;
+      --warn: #ffadad;
+      --scan: rgba(255, 255, 255, 0.05);
+    }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0a0a23 80%, #1a0033 100%);
-            color: var(--text-main);
-            font-family: 'Orbitron', monospace;
-            overflow-x: hidden;
-            position: relative;
-            letter-spacing: 0.05em;
-        }
+    * { box-sizing: border-box; }
 
-        .glitch {
-            font-size: 3rem;
-            color: var(--neon-green);
-            position: relative;
-            display: inline-block;
-            animation: flicker 2s infinite alternate;
-            text-shadow: 0 0 8px var(--neon-green), 0 0 30px var(--neon-green), 2px 2px 2px var(--glitch-red), -2px -2px 2px var(--glitch-blue);
-        }
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Verdana", sans-serif;
+      background: radial-gradient(circle at 20% 10%, #243b61 0%, #0a1222 60%, #060b16 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 1rem;
+    }
 
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            overflow: hidden;
-            color: var(--glitch-red);
-            z-index: -1;
-            opacity: 0.7;
-        }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 1rem;
+    }
 
-        .glitch::before {
-            animation: glitchTop 1.5s infinite linear alternate-reverse;
-            color: var(--glitch-red);
-        }
+    .panel {
+      background: linear-gradient(180deg, var(--panel) 0%, #132036 100%);
+      border: 2px solid #3d5e90;
+      border-radius: 14px;
+      box-shadow: 0 10px 35px rgba(0,0,0,.35);
+      overflow: hidden;
+      position: relative;
+    }
 
-        .glitch::after {
-            animation: glitchBottom 1.2s infinite linear alternate-reverse;
-            color: var(--glitch-blue);
-        }
+    .panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent 0 3px, var(--scan) 3px 4px);
+      pointer-events: none;
+    }
 
-        @keyframes glitchTop {
-            0% {
-                clip-path: inset(0 0 80% 0);
-                transform: translate(-2px, -2px);
-            }
+    h1 {
+      margin: 0;
+      font-size: 1.45rem;
+      letter-spacing: .04em;
+    }
 
-            100% {
-                clip-path: inset(0 0 10% 0);
-                transform: translate(2px, 2px);
-            }
-        }
+    .title {
+      padding: .9rem 1rem;
+      border-bottom: 2px solid #36537f;
+      background: linear-gradient(90deg, #2d4772, #1d3151);
+    }
 
-        @keyframes glitchBottom {
-            0% {
-                clip-path: inset(80% 0 0 0);
-                transform: translate(2px, 2px);
-            }
+    canvas {
+      width: 100%;
+      max-width: 100%;
+      display: block;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      background: #0f1828;
+    }
 
-            100% {
-                clip-path: inset(10% 0 0 0);
-                transform: translate(-2px, -2px);
-            }
-        }
+    .side {
+      padding: 1rem;
+      display: grid;
+      gap: 1rem;
+    }
 
-        @keyframes flicker {
-            0%,
-            100% {
-                opacity: 1;
-            }
+    .meters { display: grid; gap: .55rem; }
 
-            45% {
-                opacity: 0.7;
-            }
+    .meter { font-size: .9rem; }
+    .meter-row {
+      display: grid;
+      grid-template-columns: 90px 1fr 40px;
+      align-items: center;
+      gap: .45rem;
+    }
 
-            55% {
-                opacity: 0.4;
-            }
+    .bar {
+      height: 14px;
+      border: 1px solid #6489bf;
+      background: #0d1c34;
+      border-radius: 7px;
+      overflow: hidden;
+    }
 
-            60% {
-                opacity: 0.9;
-            }
-        }
+    .fill {
+      height: 100%;
+      width: 50%;
+      background: linear-gradient(90deg, #8fd3ff, #b7f9b4);
+      transition: width .25s linear;
+    }
 
-        .container {
-            max-width: 600px;
-            margin: 10vh auto 0 auto;
-            background: rgba(20, 20, 40, 0.85);
-            border-radius: 20px;
-            box-shadow: 0 0 40px var(--neon-blue), 0 0 10px var(--neon-green);
-            padding: 3rem 2rem 2.5rem 2rem;
-            position: relative;
-            z-index: 2;
-            border: 1.5px solid var(--accent);
-            backdrop-filter: blur(2px);
-        }
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: .5rem;
+    }
 
-        h2 {
-            color: var(--neon-pink);
-            text-shadow: 0 0 8px var(--neon-pink), 0 0 20px var(--neon-pink);
-            margin-top: 0;
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-            letter-spacing: 0.1em;
-        }
+    button {
+      border: 1px solid #7ea6dc;
+      background: linear-gradient(180deg, #3b5c8f 0%, #2a4367 100%);
+      color: #eff6ff;
+      border-radius: 8px;
+      font-weight: 700;
+      padding: .55rem .7rem;
+      cursor: pointer;
+    }
 
-        p {
-            font-size: 1.2rem;
-            color: var(--text-main);
-            margin-bottom: 2rem;
-        }
+    button:hover { filter: brightness(1.08); }
 
-        .access-panel {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.7rem;
-            align-items: center;
-        }
+    .log {
+      background: #0c1525;
+      border: 1px solid #385a89;
+      border-radius: 10px;
+      min-height: 145px;
+      max-height: 220px;
+      overflow: auto;
+      padding: .55rem .65rem;
+      font-size: .86rem;
+      line-height: 1.35;
+    }
 
-        .cta-btn {
-            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
-            color: #111;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            font-family: inherit;
-            padding: 0.9rem 2.2rem;
-            cursor: pointer;
-            box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-blue);
-            text-shadow: 0 0 2px #fff;
-            transition: transform 0.12s, box-shadow 0.12s;
-            outline: none;
-            margin-bottom: 1rem;
-        }
+    .log p { margin: 0 0 .4rem; }
 
-        .cta-btn:hover,
-        .cta-btn:focus {
-            transform: scale(1.07) rotate(-1deg);
-            box-shadow: 0 0 25px var(--neon-pink), 0 0 40px var(--neon-blue);
-        }
+    .credits {
+      font-size: .77rem;
+      opacity: .86;
+      border-top: 1px dashed #4d72a8;
+      padding-top: .7rem;
+    }
 
-        .password-input {
-            font-family: inherit;
-            font-size: 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--neon-blue);
-            padding: 0.8rem 0.9rem;
-            color: var(--text-main);
-            background: rgba(10, 10, 35, 0.8);
-            box-shadow: 0 0 10px rgba(0, 234, 255, 0.25);
-            min-width: 180px;
-            margin-bottom: 1rem;
-        }
+    .credits a { color: #a7d3ff; }
 
-        .password-input:focus {
-            outline: none;
-            border-color: var(--neon-green);
-            box-shadow: 0 0 12px rgba(57, 255, 20, 0.45);
-        }
-
-        .status-msg {
-            min-height: 1.4rem;
-            color: var(--neon-pink);
-            font-size: 0.9rem;
-            margin: 0;
-        }
-
-        .footer {
-            text-align: center;
-            color: var(--accent);
-            font-size: 1rem;
-            margin-top: 3rem;
-            opacity: 0.7;
-            letter-spacing: 0.07em;
-        }
-
-        .hex-bg {
-            pointer-events: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            background: repeating-linear-gradient(60deg, transparent, transparent 40px, var(--neon-blue) 41px, transparent 42px), repeating-linear-gradient(120deg, transparent, transparent 40px, var(--neon-green) 41px, transparent 42px);
-            opacity: 0.08;
-            animation: bgmove 30s linear infinite;
-        }
-
-        @keyframes bgmove {
-            0% {
-                background-position: 0 0, 0 0;
-            }
-
-            100% {
-                background-position: 200px 200px, -200px -200px;
-            }
-        }
-    </style>
+    @media (max-width: 900px) {
+      .wrap { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <div class="hex-bg"></div>
-    <div class="container">
-        <div class="glitch" data-text="ELECTRIC SPRING">ELECTRIC SPRING</div>
-        <h2>Welcome to the digital frontier.</h2>
-        <p>
-            Dive into a world where code pulses like neon.<br>
-            Technology, creativity, and a spark of rebellion.<br>
-            <span style="color:var(--neon-green);">Connect. Explore. Disrupt.</span>
-        </p>
-        <div class="access-panel">
-            <button class="cta-btn" id="enterButton">Enter the System</button>
-            <input type="password" class="password-input" id="systemPassword" placeholder="Password" aria-label="System password">
+  <main class="wrap">
+    <section class="panel">
+      <div class="title">
+        <h1>Little Computer People — Mini Sim Tribute</h1>
+      </div>
+      <canvas id="game" width="720" height="432" aria-label="Casa con personaggio virtuale"></canvas>
+    </section>
+
+    <aside class="panel">
+      <div class="title">
+        <h1>Terminale Proprietario</h1>
+      </div>
+      <div class="side">
+        <div class="meters">
+          <div class="meter-row"><span>Umore</span><div class="bar"><div class="fill" id="moodBar"></div></div><span id="moodTxt">50</span></div>
+          <div class="meter-row"><span>Fame</span><div class="bar"><div class="fill" id="hungerBar"></div></div><span id="hungerTxt">50</span></div>
+          <div class="meter-row"><span>Energia</span><div class="bar"><div class="fill" id="energyBar"></div></div><span id="energyTxt">50</span></div>
         </div>
-        <p class="status-msg" id="statusMsg"></p>
-    </div>
-    <div class="footer">
-        &copy; 2025 Electric Spring. All rights reserved.
-    </div>
 
-    <script>
-        const enterButton = document.getElementById('enterButton');
-        const systemPassword = document.getElementById('systemPassword');
-        const statusMsg = document.getElementById('statusMsg');
+        <div class="buttons">
+          <button id="knockBtn">Bussa alla porta</button>
+          <button id="feedBtn">Invia snack</button>
+          <button id="musicBtn">Metti disco jazz</button>
+        </div>
 
-        function tryAccess() {
-            if (systemPassword.value === '312') {
-                statusMsg.textContent = 'Access granted. Redirecting...';
-                statusMsg.style.color = 'var(--neon-green)';
-                window.location.href = 'secret-chamber.html';
-                return;
-            }
+        <div class="log" id="log"></div>
 
-            statusMsg.textContent = 'Access denied. Wrong key.';
-            statusMsg.style.color = 'var(--neon-pink)';
-        }
+        <div class="credits">
+          Basato sulle schermate storiche del gioco originale (1985):
+          <a href="https://www.mobygames.com/game/1754/little-computer-people/screenshots/" target="_blank" rel="noopener">MobyGames gallery</a>,
+          <a href="https://www.c64-wiki.com/wiki/Little_Computer_People" target="_blank" rel="noopener">C64-Wiki</a>.<br>
+          Sprite: ridisegno originale pixel-art incluso in questa pagina (uso libero per questo progetto).
+        </div>
+      </div>
+    </aside>
+  </main>
 
-        enterButton.addEventListener('click', tryAccess);
-        systemPassword.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                tryAccess();
-            }
-        });
-    </script>
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+
+    const bars = {
+      mood: document.getElementById('moodBar'),
+      hunger: document.getElementById('hungerBar'),
+      energy: document.getElementById('energyBar')
+    };
+    const txt = {
+      mood: document.getElementById('moodTxt'),
+      hunger: document.getElementById('hungerTxt'),
+      energy: document.getElementById('energyTxt')
+    };
+
+    const logEl = document.getElementById('log');
+
+    const state = {
+      clock: 8,
+      mood: 62,
+      hunger: 42,
+      energy: 70,
+      activity: 'scrive una lettera',
+      pos: { x: 135, y: 305 },
+      target: { x: 135, y: 305 },
+      frame: 0,
+      danceTimer: 0,
+      bubble: 'Buongiorno, vicino umano!'
+    };
+
+    const schedule = [
+      { from: 6, to: 8, room: 'camera', x: 114, y: 178, act: 'si sveglia lentamente' },
+      { from: 8, to: 11, room: 'studio', x: 132, y: 306, act: 'scrive una lettera' },
+      { from: 11, to: 13, room: 'cucina', x: 465, y: 302, act: 'prepara una zuppa' },
+      { from: 13, to: 16, room: 'salotto', x: 470, y: 182, act: 'legge il giornale' },
+      { from: 16, to: 19, room: 'studio', x: 210, y: 306, act: 'accudisce il cagnolino' },
+      { from: 19, to: 22, room: 'salotto', x: 550, y: 182, act: 'suona il piano' },
+      { from: 22, to: 24, room: 'camera', x: 165, y: 178, act: 'si prepara per dormire' },
+      { from: 0, to: 6, room: 'camera', x: 165, y: 178, act: 'dorme profondamente' }
+    ];
+
+    function addLog(message) {
+      const p = document.createElement('p');
+      p.textContent = `[${state.clock.toFixed(1).padStart(4, '0')}h] ${message}`;
+      logEl.prepend(p);
+      while (logEl.children.length > 12) logEl.removeChild(logEl.lastChild);
+    }
+
+    function clamp(v, min = 0, max = 100) {
+      return Math.max(min, Math.min(max, v));
+    }
+
+    function updateMeters() {
+      ['mood', 'hunger', 'energy'].forEach((k) => {
+        const value = Math.round(state[k]);
+        bars[k].style.width = `${value}%`;
+        txt[k].textContent = value;
+      });
+    }
+
+    function getCurrentRoutine() {
+      return schedule.find((s) => state.clock >= s.from && state.clock < s.to) || schedule[0];
+    }
+
+    function aiTick() {
+      state.clock += 0.008;
+      if (state.clock >= 24) state.clock -= 24;
+
+      const routine = getCurrentRoutine();
+      state.target.x = routine.x;
+      state.target.y = routine.y;
+      state.activity = routine.act;
+
+      state.hunger = clamp(state.hunger + 0.03);
+      state.energy = clamp(state.energy - 0.025);
+      state.mood = clamp(state.mood - 0.01 + (state.danceTimer > 0 ? 0.06 : 0));
+
+      if (state.clock > 22 || state.clock < 6) {
+        state.energy = clamp(state.energy + 0.035);
+      }
+
+      if (state.hunger > 82) {
+        state.mood = clamp(state.mood - 0.08);
+        state.bubble = 'Ho un certo languorino...';
+      } else if (state.energy < 24) {
+        state.bubble = 'Mi serve un pisolino.';
+      } else if (state.danceTimer > 0) {
+        state.bubble = 'Questo jazz è fantastico!';
+      } else {
+        state.bubble = `${state.activity}.`;
+      }
+
+      state.danceTimer = Math.max(0, state.danceTimer - 1);
+
+      const dx = state.target.x - state.pos.x;
+      const dy = state.target.y - state.pos.y;
+      state.pos.x += Math.sign(dx) * Math.min(Math.abs(dx), 0.75);
+      state.pos.y += Math.sign(dy) * Math.min(Math.abs(dy), 0.75);
+
+      state.frame += 1;
+      updateMeters();
+    }
+
+    function drawHouse() {
+      const night = state.clock > 20 || state.clock < 6;
+      ctx.fillStyle = night ? '#101826' : '#233958';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // rooms
+      const rooms = [
+        { x: 50, y: 50, w: 260, h: 150, color: '#7c6d59' },
+        { x: 350, y: 50, w: 320, h: 150, color: '#6f5a49' },
+        { x: 50, y: 230, w: 280, h: 150, color: '#5a6776' },
+        { x: 350, y: 230, w: 320, h: 150, color: '#7a6a4d' }
+      ];
+
+      rooms.forEach((r) => {
+        ctx.fillStyle = r.color;
+        ctx.fillRect(r.x, r.y, r.w, r.h);
+        ctx.strokeStyle = '#291f1a';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(r.x, r.y, r.w, r.h);
+      });
+
+      // furniture hints
+      ctx.fillStyle = '#c4ab74'; ctx.fillRect(72, 80, 82, 52); // bed
+      ctx.fillStyle = '#26384e'; ctx.fillRect(95, 258, 75, 54); // desk
+      ctx.fillStyle = '#c2935b'; ctx.fillRect(530, 258, 70, 56); // table
+      ctx.fillStyle = '#3f2e2d'; ctx.fillRect(470, 125, 120, 20); // piano
+
+      // time display
+      ctx.fillStyle = '#e7f2ff';
+      ctx.font = 'bold 18px monospace';
+      ctx.fillText(`Ora virtuale: ${state.clock.toFixed(1)}h`, 460, 26);
+    }
+
+    function drawPerson() {
+      const x = Math.round(state.pos.x);
+      const y = Math.round(state.pos.y);
+      const step = Math.floor(state.frame / 12) % 2;
+      const armShift = state.danceTimer > 0 ? (step ? -4 : 4) : (step ? -1 : 1);
+
+      // shadow
+      ctx.fillStyle = 'rgba(0,0,0,.28)';
+      ctx.fillRect(x - 8, y + 30, 18, 5);
+
+      // body
+      ctx.fillStyle = '#7cb2e8';
+      ctx.fillRect(x - 6, y + 8, 12, 16);
+      // head
+      ctx.fillStyle = '#f0cb9e';
+      ctx.fillRect(x - 5, y - 2, 10, 10);
+      // hair
+      ctx.fillStyle = '#3f2e23';
+      ctx.fillRect(x - 5, y - 2, 10, 3);
+      // legs
+      ctx.fillStyle = '#2f4b6f';
+      ctx.fillRect(x - 5, y + 24, 4, 10 + step);
+      ctx.fillRect(x + 1, y + 24, 4, 10 + (step ? 0 : 1));
+      // arms
+      ctx.fillStyle = '#f0cb9e';
+      ctx.fillRect(x - 9 + armShift, y + 10, 4, 9);
+      ctx.fillRect(x + 5 - armShift, y + 10, 4, 9);
+
+      // speech bubble
+      const bubbleW = Math.min(260, 20 + state.bubble.length * 6.6);
+      const bubbleX = Math.min(canvas.width - bubbleW - 12, Math.max(10, x - 40));
+      const bubbleY = y - 44;
+      ctx.fillStyle = 'rgba(235,246,255,.95)';
+      ctx.fillRect(bubbleX, bubbleY, bubbleW, 24);
+      ctx.strokeStyle = '#3f5d86';
+      ctx.strokeRect(bubbleX, bubbleY, bubbleW, 24);
+      ctx.fillStyle = '#1a2b48';
+      ctx.font = '12px monospace';
+      ctx.fillText(state.bubble.slice(0, 38), bubbleX + 6, bubbleY + 16);
+    }
+
+    function render() {
+      drawHouse();
+      drawPerson();
+      requestAnimationFrame(render);
+    }
+
+    function loop() {
+      aiTick();
+      setTimeout(loop, 80);
+    }
+
+    document.getElementById('knockBtn').addEventListener('click', () => {
+      state.mood = clamp(state.mood + 8);
+      state.bubble = 'Toc toc! Ciao amico!';
+      addLog('Hai bussato: lui risponde con entusiasmo.');
+    });
+
+    document.getElementById('feedBtn').addEventListener('click', () => {
+      state.hunger = clamp(state.hunger - 26);
+      state.mood = clamp(state.mood + 6);
+      state.energy = clamp(state.energy + 4);
+      state.bubble = 'Grazie per lo snack!';
+      addLog('Snack consegnato tramite il vano digitale.');
+    });
+
+    document.getElementById('musicBtn').addEventListener('click', () => {
+      state.danceTimer = 120;
+      state.mood = clamp(state.mood + 10);
+      state.bubble = 'Swing mode: ON';
+      addLog('Hai inserito un disco jazz. Parte un balletto improvvisato.');
+    });
+
+    addLog('Sistema avviato. Tributo ispirato a Little Computer People.');
+    updateMeters();
+    loop();
+    render();
+  </script>
 </body>
 </html>
