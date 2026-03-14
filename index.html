@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -37,27 +37,28 @@
             text-shadow: 0 0 8px var(--neon-green), 0 0 30px var(--neon-green), 2px 2px 2px var(--glitch-red), -2px -2px 2px var(--glitch-blue);
         }
 
-            .glitch::before, .glitch::after {
-                content: attr(data-text);
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                overflow: hidden;
-                color: var(--glitch-red);
-                z-index: -1;
-                opacity: 0.7;
-            }
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            overflow: hidden;
+            color: var(--glitch-red);
+            z-index: -1;
+            opacity: 0.7;
+        }
 
-            .glitch::before {
-                animation: glitchTop 1.5s infinite linear alternate-reverse;
-                color: var(--glitch-red);
-            }
+        .glitch::before {
+            animation: glitchTop 1.5s infinite linear alternate-reverse;
+            color: var(--glitch-red);
+        }
 
-            .glitch::after {
-                animation: glitchBottom 1.2s infinite linear alternate-reverse;
-                color: var(--glitch-blue);
-            }
+        .glitch::after {
+            animation: glitchBottom 1.2s infinite linear alternate-reverse;
+            color: var(--glitch-blue);
+        }
 
         @keyframes glitchTop {
             0% {
@@ -84,7 +85,8 @@
         }
 
         @keyframes flicker {
-            0%, 100% {
+            0%,
+            100% {
                 opacity: 1;
             }
 
@@ -104,7 +106,7 @@
         .container {
             max-width: 600px;
             margin: 10vh auto 0 auto;
-            background: rgba(20,20,40,0.85);
+            background: rgba(20, 20, 40, 0.85);
             border-radius: 20px;
             box-shadow: 0 0 40px var(--neon-blue), 0 0 10px var(--neon-green);
             padding: 3rem 2rem 2.5rem 2rem;
@@ -129,6 +131,13 @@
             margin-bottom: 2rem;
         }
 
+        .access-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            align-items: center;
+        }
+
         .cta-btn {
             background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
             color: #111;
@@ -145,10 +154,37 @@
             margin-bottom: 1rem;
         }
 
-            .cta-btn:hover, .cta-btn:focus {
-                transform: scale(1.07) rotate(-1deg);
-                box-shadow: 0 0 25px var(--neon-pink), 0 0 40px var(--neon-blue);
-            }
+        .cta-btn:hover,
+        .cta-btn:focus {
+            transform: scale(1.07) rotate(-1deg);
+            box-shadow: 0 0 25px var(--neon-pink), 0 0 40px var(--neon-blue);
+        }
+
+        .password-input {
+            font-family: inherit;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--neon-blue);
+            padding: 0.8rem 0.9rem;
+            color: var(--text-main);
+            background: rgba(10, 10, 35, 0.8);
+            box-shadow: 0 0 10px rgba(0, 234, 255, 0.25);
+            min-width: 180px;
+            margin-bottom: 1rem;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 12px rgba(57, 255, 20, 0.45);
+        }
+
+        .status-msg {
+            min-height: 1.4rem;
+            color: var(--neon-pink);
+            font-size: 0.9rem;
+            margin: 0;
+        }
 
         .footer {
             text-align: center;
@@ -193,10 +229,39 @@
             Technology, creativity, and a spark of rebellion.<br>
             <span style="color:var(--neon-green);">Connect. Explore. Disrupt.</span>
         </p>
-        <button class="cta-btn">Enter the System</button>
+        <div class="access-panel">
+            <button class="cta-btn" id="enterButton">Enter the System</button>
+            <input type="password" class="password-input" id="systemPassword" placeholder="Password" aria-label="System password">
+        </div>
+        <p class="status-msg" id="statusMsg"></p>
     </div>
     <div class="footer">
         &copy; 2025 Electric Spring. All rights reserved.
     </div>
+
+    <script>
+        const enterButton = document.getElementById('enterButton');
+        const systemPassword = document.getElementById('systemPassword');
+        const statusMsg = document.getElementById('statusMsg');
+
+        function tryAccess() {
+            if (systemPassword.value === '312') {
+                statusMsg.textContent = 'Access granted. Redirecting...';
+                statusMsg.style.color = 'var(--neon-green)';
+                window.location.href = 'secret-chamber.html';
+                return;
+            }
+
+            statusMsg.textContent = 'Access denied. Wrong key.';
+            statusMsg.style.color = 'var(--neon-pink)';
+        }
+
+        enterButton.addEventListener('click', tryAccess);
+        systemPassword.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                tryAccess();
+            }
+        });
+    </script>
 </body>
 </html>
